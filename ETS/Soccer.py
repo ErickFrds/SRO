@@ -148,6 +148,13 @@ try:
         ball_pos = sim.getObjectPosition(bola_merah, sim.handle_world)
         goal_pos = sim.getObjectPosition(gawang_kuning, sim.handle_world)
 
+        # Virtual center of yellow goal opening
+        goal_center = [
+            goal_pos[0],
+            goal_pos[1] + 0.6,   # tune this value if needed
+            goal_pos[2]
+        ]
+
         # ==============================
         # Ball teleport if out of field
         # ==============================
@@ -161,8 +168,8 @@ try:
         # ==============================
 
         # direction from ball to goal
-        dx_goal = goal_pos[0] - ball_pos[0]
-        dy_goal = goal_pos[1] - ball_pos[1]
+        dx_goal = goal_center[0] - ball_pos[0]
+        dy_goal = goal_center[1] - ball_pos[1]
         dist_goal = math.sqrt(dx_goal**2 + dy_goal**2)
 
         if dist_goal < 1e-6:
@@ -214,7 +221,7 @@ try:
         # decision logic
         if dot < 0 or dist_striker_ball > 0.75:
             # not behind ball yet
-            striker_target = behind_ball_targ
+            striker_target = behind_ball_target
         elif not aligned:
             striker_target = [
                 ball_pos[0] + 1.2 * ux,
